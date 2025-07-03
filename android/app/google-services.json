@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "816767361642",
+    "project_id": "mobile-project-63d46",
+    "storage_bucket": "mobile-project-63d46.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816767361642:android:3b59a26c4dc0280ae66013",
+        "android_client_info": {
+          "package_name": "com.upm.certrepository.digital_certificate_repository"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "816767361642-6k1fjqvto9ti1vunje60eb9j1rh4v7f1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYHyc9BrC6YB0ZlYBEkjAhJfatBsZcfv8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "816767361642-6k1fjqvto9ti1vunje60eb9j1rh4v7f1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "816767361642-63apffsvoltcpia85erso5oa3blftehe.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.upm.certrepository.digitalCertificateRepository"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

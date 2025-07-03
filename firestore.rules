@@ -1,0 +1,15 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // 🚨 DEVELOPMENT MODE: EXTREMELY PERMISSIVE RULES
+    // ⚠️  WARNING: DO NOT USE IN PRODUCTION! 
+    // ⚠️  These rules allow all operations - for development and testing only
+    
+    // Allow all operations on all documents for any authenticated user
+    match /{document=**} {
+      allow read, write, create, update, delete: if true;
+    }
+  }
+}

@@ -1,0 +1,12 @@
+# Analyzer configuration for Digital Certificate Repository
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Context usage in async functions - disabled because we use mounted checks
+    use_build_context_synchronously: false
+    
+    # Code style preferences (optional - can be disabled if too strict)
+    prefer_single_quotes: true
+    # sort_constructors_first: true  # Uncomment if you want strict constructor ordering
+    # sort_unnamed_constructors_first: true  # Uncomment if you want strict constructor ordering
