@@ -319,43 +319,7 @@ class _CertificateDetailPageState extends ConsumerState<CertificateDetailPage>
           ),
           const SizedBox(height: AppTheme.spacingL),
 
-          // Share Link Button (2B Work)
-          Center(
-            child: ElevatedButton.icon(
-              onPressed: () {
-                final url =
-                    '${AppConfig.verificationBaseUrl}/${certificate.verificationCode}';
-                Clipboard.setData(ClipboardData(text: url));
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                      content: Text('Share link copied to clipboard!')),
-                );
-              },
-              icon: const Icon(Icons.link),
-              label: const Text('Copy Secure Share Link'),
-            ),
-          ),
-          if (certificate.tags.isNotEmpty) ...[
-            const SizedBox(height: AppTheme.spacingL),
-            _buildTagsSection(certificate.tags),
-          ],
-          if (certificate.notes != null && certificate.notes!.isNotEmpty) ...[
-            const SizedBox(height: AppTheme.spacingL),
-            _buildInfoSection(
-              title: 'Notes',
-              icon: Icons.note,
-              children: [
-                Text(
-                  certificate.notes!,
-                  style: AppTheme.bodyMedium,
-                ),
-              ],
-            ),
-          ],
-        ],
-      ),
-    );
-  }
+
 
   Widget _buildVerificationTab(CertificateModel certificate) {
     return SingleChildScrollView(
@@ -432,7 +396,43 @@ class _CertificateDetailPageState extends ConsumerState<CertificateDetailPage>
       ),
     );
   }
-
+          // Share Link Button (2B Work)
+          Center(
+            child: ElevatedButton.icon(
+              onPressed: () {
+                final url =
+                    '${AppConfig.verificationBaseUrl}/${certificate.verificationCode}';
+                Clipboard.setData(ClipboardData(text: url));
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text('Share link copied to clipboard!')),
+                );
+              },
+              icon: const Icon(Icons.link),
+              label: const Text('Copy Secure Share Link'),
+            ),
+          ),
+          if (certificate.tags.isNotEmpty) ...[
+            const SizedBox(height: AppTheme.spacingL),
+            _buildTagsSection(certificate.tags),
+          ],
+          if (certificate.notes != null && certificate.notes!.isNotEmpty) ...[
+            const SizedBox(height: AppTheme.spacingL),
+            _buildInfoSection(
+              title: 'Notes',
+              icon: Icons.note,
+              children: [
+                Text(
+                  certificate.notes!,
+                  style: AppTheme.bodyMedium,
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
   Widget _buildHistoryTab(CertificateModel certificate) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(AppTheme.spacingL),
