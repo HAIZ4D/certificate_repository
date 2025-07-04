@@ -16,6 +16,12 @@ import '../widgets/dashboard_stats_card.dart';
 import '../widgets/quick_action_card.dart';
 import '../widgets/recent_activity_card.dart';
 
+/// DashboardPage
+///
+/// Animated, feature-rich dashboard implementation that greets the user and
+/// provides quick actions, statistics, recent activities and role-specific
+/// widgets. The page leverages Riverpod for state management and an
+/// AnimationController for a subtle fade-in on first build.
 class DashboardPage extends ConsumerStatefulWidget {
   const DashboardPage({super.key});
 
