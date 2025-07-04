@@ -8,6 +8,11 @@ import '../../../../core/services/validation_service.dart';
 import '../../../auth/providers/auth_providers.dart';
 import '../../../../core/services/logger_service.dart';
 
+/// ForgotPasswordPage
+///
+/// Allows users to request a password reset email using their UPM account.
+/// Displays contextual success and error states and links back to the login
+/// screen.
 class ForgotPasswordPage extends ConsumerStatefulWidget {
   const ForgotPasswordPage({super.key});
 
