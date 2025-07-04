@@ -10,6 +10,12 @@ import '../../../certificates/providers/certificate_providers.dart';
 import '../../services/activity_service.dart';
 import '../../../support/presentation/pages/help_support_page.dart';
 
+/// DashboardHomePage
+///
+/// Main landing view inside the dashboard tab. Displays a personalized greeting,
+/// certificate statistics, quick action shortcuts and a recent activity feed.
+/// Uses Riverpod for state management and keeps its state alive with
+/// AutomaticKeepAliveClientMixin.
 class DashboardHomePage extends ConsumerStatefulWidget {
   const DashboardHomePage({super.key});
 
