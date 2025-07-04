@@ -3,6 +3,11 @@ import 'package:animate_do/animate_do.dart';
 
 import '../../../../core/theme/app_theme.dart';
 
+/// RecentActivityCard
+///
+/// Displays a list preview of the most recent user actions, helping users
+/// quickly recall what they have done inside the application. Falls back to an
+/// informative empty state when no activities are available.
 class RecentActivityCard extends StatelessWidget {
   final List<Map<String, dynamic>> activities;
   final int maxItems;
