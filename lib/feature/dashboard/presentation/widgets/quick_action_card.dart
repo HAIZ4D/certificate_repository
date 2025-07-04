@@ -3,6 +3,11 @@ import 'package:animate_do/animate_do.dart';
 
 import '../../../../core/theme/app_theme.dart';
 
+/// QuickActionCard
+///
+/// Tappable card displayed in the dashboard grid for launching time-saving
+/// actions. Features a subtle scale animation on press and supports a disabled
+/// state.
 class QuickActionCard extends StatefulWidget {
   final String title;
   final String subtitle;
