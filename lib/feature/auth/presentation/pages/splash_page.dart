@@ -8,6 +8,11 @@ import '../../../../core/config/app_config.dart';
 import '../../../../core/models/user_model.dart';
 import '../../../auth/providers/auth_providers.dart';
 
+/// SplashPage
+///
+/// Lightweight entry screen that decides whether to auto-navigate users to the
+/// dashboard or login page based on cached credentials and Firebase auth
+/// state.
 class SplashPage extends ConsumerStatefulWidget {
   const SplashPage({super.key});
 
