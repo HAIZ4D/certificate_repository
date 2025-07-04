@@ -3,6 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../core/theme/app_theme.dart';
 
+/// SocialLoginButton
+///
+/// Animated button used for social authentication (Google, Apple, etc.).
+/// Provides loading state, icon display (SVG or raster) and press feedback via
+/// a scale animation.
 class SocialLoginButton extends StatefulWidget {
   final VoidCallback? onPressed;
   final String icon;
