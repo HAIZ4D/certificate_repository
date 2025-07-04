@@ -2,7 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/services/logger_service.dart';
+import 'package:flutter/material.dart';
+import '../../../core/theme/app_theme.dart';
 
+/// ActivityService
+///
+/// Handles logging and querying of user and system activities stored in
+/// Firestore. Also contains a set of helper utilities for summarising activity
+/// statistics and transforming raw log documents into UI-ready data models.
 class ActivityService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -331,57 +338,58 @@ class ActivityService {
     }
   }
   
-  String _getActivityIcon(String action) {
+  IconData _getActivityIcon(String action) {
     switch (action.toLowerCase()) {
       case 'login':
+        return Icons.login;
       case 'logout':
-        return 'login';
+        return Icons.logout;
       case 'create_certificate':
       case 'issue_certificate':
-        return 'certificate';
+        return Icons.verified;
       case 'revoke_certificate':
-        return 'block';
+        return Icons.block;
       case 'download_certificate':
-        return 'download';
+        return Icons.download;
       case 'share_certificate':
-        return 'share';
+        return Icons.share;
       case 'upload_document':
-        return 'upload';
+        return Icons.upload_file;
       case 'verify_document':
-        return 'verified';
+        return Icons.verified_user;
       case 'update_profile':
-        return 'person';
+        return Icons.person;
       case 'view_document':
-        return 'visibility';
+        return Icons.visibility;
       case 'delete_document':
-        return 'delete';
+        return Icons.delete;
       default:
-        return 'info';
+        return Icons.info;
     }
   }
   
-  String _getActivityColor(String action) {
+  Color _getActivityColor(String action) {
     switch (action.toLowerCase()) {
       case 'login':
-        return 'success';
+        return AppTheme.successColor;
       case 'logout':
-        return 'info';
+        return AppTheme.infoColor;
       case 'create_certificate':
       case 'issue_certificate':
-        return 'primary';
+        return AppTheme.primaryColor;
       case 'revoke_certificate':
       case 'delete_document':
-        return 'error';
+        return AppTheme.errorColor;
       case 'download_certificate':
       case 'share_certificate':
-        return 'info';
+        return AppTheme.infoColor;
       case 'upload_document':
       case 'verify_document':
-        return 'success';
+        return AppTheme.successColor;
       case 'update_profile':
-        return 'warning';
+        return AppTheme.warningColor;
       default:
-        return 'primary';
+        return AppTheme.primaryColor;
     }
   }
   
