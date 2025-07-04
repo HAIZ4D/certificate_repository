@@ -8,7 +8,13 @@ import '../../../auth/providers/auth_providers.dart';
 import '../../../profile/presentation/widgets/change_password_dialog.dart';
 import '../../../profile/presentation/widgets/two_factor_setup_dialog.dart';
 
-
+/// SettingsPage
+///
+/// Provides a comprehensive preferences UI: profile, notifications, security,
+/// appearance, language/region, data/privacy, support and account actions. Each
+/// section is isolated into helper builders for readability. Uses Riverpod to
+/// fetch the authenticated user and ensures anonymous users are redirected to
+/// login.
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
 
