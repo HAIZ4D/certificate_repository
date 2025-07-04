@@ -7,6 +7,11 @@ import '../../../../core/services/initialization_service.dart';
 import '../../../../core/services/logger_service.dart';
 import '../../../../core/config/app_config.dart';
 
+/// AdminSetupPage
+///
+/// Guided flow for initializing the very first system administrator account
+/// during a fresh installation. This page is only reachable when no admin
+/// users exist in the backend.
 class AdminSetupPage extends ConsumerStatefulWidget {
   const AdminSetupPage({super.key});
 
