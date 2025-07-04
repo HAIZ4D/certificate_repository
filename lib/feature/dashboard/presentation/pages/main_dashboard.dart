@@ -6,6 +6,11 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/models/user_model.dart';
 import '../../../auth/providers/auth_providers.dart';
 
+/// MainDashboard
+///
+/// Hosts the primary bottom-navigation scaffold that switches between the
+/// major sections of the application. Navigation items are generated based on
+/// the authenticated user's role and remain in sync with the current route.
 class MainDashboard extends ConsumerStatefulWidget {
   final Widget child;
 
