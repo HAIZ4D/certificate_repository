@@ -1,3 +1,10 @@
+/// Authentication & User Providers
+///
+/// Centralizes all Riverpod providers related to authentication, current user
+/// retrieval, role/permission checks and logging utilities.
+///
+/// Keeping them in one place avoids cyclic imports and makes it easy for other
+/// features to consume auth state consistently.
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
