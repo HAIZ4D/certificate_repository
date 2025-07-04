@@ -6,6 +6,19 @@ import 'package:flutter/foundation.dart';
 import 'package:image/image.dart' as img;
 import 'logger_service.dart';
 
+/// UserProfileService
+///
+/// Centralised service responsible for all profile-related operations:
+///  • Fetching and streaming the authenticated user's Firestore document
+///  • Updating general profile fields, preferences and privacy settings
+///  • Handling avatar processing, upload, cleanup and URL propagation
+///  • Managing sensitive actions such as email/password changes and account deletion with proper re-authentication
+///  • Exporting user data for GDPR compliance and providing activity history
+///
+/// All methods throw descriptive Exceptions so callers can surface meaningful
+/// error messages in the UI. The service performs best-effort cleanup/log tasks
+/// (e.g. old avatar deletion, activity logging) but never lets failures in those
+/// secondary processes break the primary user operation.
 class UserProfileService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
