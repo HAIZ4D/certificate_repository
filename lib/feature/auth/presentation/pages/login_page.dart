@@ -10,6 +10,11 @@ import '../../providers/auth_providers.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/social_login_button.dart';
 
+/// LoginPage
+///
+/// Provides email/password and Google SSO authentication workflows. Includes
+/// remember-me functionality, error handling, and redirects authenticated users
+/// to their default dashboard route.
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
 
