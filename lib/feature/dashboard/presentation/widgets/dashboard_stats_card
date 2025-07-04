@@ -3,6 +3,11 @@ import 'package:animate_do/animate_do.dart';
 
 import '../../../../core/theme/app_theme.dart';
 
+/// DashboardStatsCard
+///
+/// Generic card widget used to render a key statistics value alongside an icon
+/// and optional trend indicator. Designed to be flexible so it can be reused
+/// across multiple dashboard contexts.
 class DashboardStatsCard extends StatelessWidget {
   final String title;
   final String value;
