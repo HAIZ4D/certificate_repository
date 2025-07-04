@@ -8,6 +8,12 @@ import '../../../core/config/app_config.dart';
 import 'user_service.dart';
 import '../../dashboard/services/activity_service.dart';
 
+/// AuthService
+///
+/// High-level wrapper around FirebaseAuth, GoogleSignIn and Firestore user
+/// document management. Provides email/password and Google SSO flows, sign-up,
+/// sign-out, remember-me handling, and helper utilities for checking auto-login
+/// and updating last-login timestamps.
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
