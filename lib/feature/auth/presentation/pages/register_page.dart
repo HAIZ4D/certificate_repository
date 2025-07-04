@@ -11,6 +11,11 @@ import '../../providers/auth_providers.dart';
 import '../widgets/custom_text_field.dart';
 import '../widgets/social_login_button.dart';
 
+/// RegisterPage
+///
+/// Multi-step wizard for creating a new account with role selection, field
+/// validation, Google sign-up and email/password flow. Handles pending status
+/// states for CA/Admin roles.
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
 
