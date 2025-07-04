@@ -3,6 +3,11 @@ import 'package:flutter/services.dart';
 
 import '../../../../core/theme/app_theme.dart';
 
+/// CustomTextField
+///
+/// Reusable, Material-compliant text form field with animated focus effects,
+/// built-in validation hook and multiple specialized subclasses (EmailTextField,
+/// PasswordTextField, etc.).
 class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
   final String? label;
