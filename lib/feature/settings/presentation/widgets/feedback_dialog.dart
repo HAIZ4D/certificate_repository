@@ -5,6 +5,11 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../auth/providers/auth_providers.dart';
 import '../../../../core/services/logger_service.dart';
 
+/// FeedbackDialog
+///
+/// Modal dialog that allows authenticated users to submit structured feedback
+/// (general, bug, feature request, etc.) to Firestore. Includes validation,
+/// category selection and priority mapping.
 class FeedbackDialog extends ConsumerStatefulWidget {
   const FeedbackDialog({super.key});
 
