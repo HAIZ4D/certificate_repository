@@ -3,6 +3,11 @@ import 'package:logger/logger.dart';
 
 import '../../../core/models/user_model.dart';
 
+/// UserService
+///
+/// Encapsulates all Firestore operations for CRUD and query tasks related to
+/// `UserModel`. Keeps database logic out of UI layers and AuthService, and
+/// offers reusable helpers like bulk updates and statistics retrieval.
 class UserService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final Logger _logger = Logger();
