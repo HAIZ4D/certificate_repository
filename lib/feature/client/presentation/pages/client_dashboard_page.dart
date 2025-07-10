@@ -458,6 +458,148 @@ class _ClientDashboardPageState extends ConsumerState<ClientDashboardPage> {
   }
 
 
+    Widget _buildRecentActions() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.deepPurple.shade50,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.deepPurple.shade100),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Recent Actions',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          _buildActionItem('Approved Certificate 101', '2 minutes ago'),
+          _buildActionItem('Viewed Certificate 88', '5 minutes ago'),
+          _buildActionItem('Generated Mock Certificate', '10 minutes ago'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionItem(String action, String timeAgo) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        children: [
+          const Icon(Icons.bolt, color: Colors.deepPurple, size: 20),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              action,
+              style: const TextStyle(fontSize: 14),
+            ),
+          ),
+          Text(
+            timeAgo,
+            style: const TextStyle(fontSize: 12, color: Colors.grey),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimeline() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.deepPurple.shade100),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.deepPurple.shade50,
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          )
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            '📅 Certificate Timeline',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 12),
+          _buildTimelineItem('Draft Created', 'July 1, 2025', Icons.edit_document),
+          _buildTimelineItem('Viewed by Admin', 'July 2, 2025', Icons.visibility),
+          _buildTimelineItem('Approved', 'July 3, 2025', Icons.verified),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimelineItem(String label, String date, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: Row(
+        children: [
+          Icon(icon, size: 24, color: Colors.deepPurple.shade400),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              label,
+              style: const TextStyle(fontSize: 15),
+            ),
+          ),
+          Text(
+            date,
+            style: const TextStyle(fontSize: 12, color: Colors.grey),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFakeGraphCard() {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      height: 180,
+      decoration: BoxDecoration(
+        color: Colors.deepPurple.shade100.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.deepPurple.shade200),
+      ),
+      child: Center(
+        child: Text(
+          '📈 Chart Placeholder\n(Coming Soon)',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.deepPurple.shade800,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLongTextFiller() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+      child: Text(
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus efficitur neque a erat pulvinar '
+        'tempor. Sed blandit, justo eget commodo ullamcorper, turpis ligula fringilla ex, sed vestibulum libero '
+        'tortor a orci. Curabitur eget imperdiet massa. Vestibulum sodales, nunc nec hendrerit tempus, metus '
+        'metus tincidunt nulla, sit amet eleifend enim sapien id erat. Pellentesque nec erat tellus. Morbi et '
+        'libero metus. Proin ac purus justo. Suspendisse eu rutrum sem. Donec gravida, velit eget tempor finibus, '
+        'eros nulla bibendum neque, ut lacinia velit ipsum ac arcu. Etiam imperdiet nibh nec mi lacinia fermentum. '
+        'Nulla imperdiet purus vel nulla accumsan, sit amet vehicula sem tempor. Morbi fermentum tellus et augue '
+        'interdum volutpat.',
+        style: const TextStyle(fontSize: 14, color: Colors.black87),
+      ),
+    );
+  }
+
+
 
 
 
