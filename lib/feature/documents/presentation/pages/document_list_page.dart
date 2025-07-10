@@ -464,3 +464,145 @@ class _DocumentListPageState extends ConsumerState<DocumentListPage> {
     );
   }
 } 
+
+  Widget _buildAnalyticsSection() {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('📊 Document Analytics',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              _buildStatCard('Uploaded', _documents.where((d) => d.status == DocumentStatus.uploaded).length),
+              const SizedBox(width: 12),
+              _buildStatCard('Verified', _documents.where((d) => d.status == DocumentStatus.verified).length),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              _buildStatCard('Pending', _documents.where((d) => d.status == DocumentStatus.pendingVerification).length),
+              const SizedBox(width: 12),
+              _buildStatCard('Rejected', _documents.where((d) => d.status == DocumentStatus.rejected).length),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatCard(String label, int count) {
+    return Expanded(
+      child: Container(
+        height: 80,
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceColor,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 4,
+              offset: const Offset(0, 4),
+            )
+          ],
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(count.toString(),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 4),
+              Text(label, style: const TextStyle(fontSize: 14, color: Colors.black54)),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActivityTimeline() {
+    final List<Map<String, String>> dummyActivities = List.generate(10, (index) {
+      return {
+        'title': 'Edited Document #$index',
+        'time': '${index + 1} hour(s) ago'
+      };
+    });
+
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('🕒 Recent Activity',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 12),
+          ...dummyActivities.map((activity) => ListTile(
+                leading: const Icon(Icons.history, color: AppTheme.primaryColor),
+                title: Text(activity['title']!),
+                subtitle: Text(activity['time']!),
+              )),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFooterHelp() {
+    return Container(
+      margin: const EdgeInsets.all(24),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        children: const [
+          Text('Need help?',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          SizedBox(height: 8),
+          Text(
+            'If you are experiencing issues with uploading or verifying documents, please contact your administrator or check the app documentation.',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.black54),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Dummy padding widgets to extend file length and simulate UI spacing
+  List<Widget> _buildFillerWidgets() {
+    return List.generate(20, (index) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(
+            color: index % 2 == 0 ? Colors.grey.shade100 : Colors.grey.shade300,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Center(
+            child: Text('Placeholder Row #$index',
+                style: const TextStyle(fontSize: 14)),
+          ),
+        ),
+      );
+    });
+  }
+
+
+  Widget _buildExtendedScrollView() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildAnalyticsSection(),
+          _buildActivityTimeline(),
+          _buildFooterHelp(),
+          ..._buildFillerWidgets(),
+        ],
+      ),
+    );
+  }
