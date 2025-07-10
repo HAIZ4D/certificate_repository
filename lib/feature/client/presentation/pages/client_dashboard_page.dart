@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:math';
@@ -20,73 +20,149 @@ class _ClientDashboardPageState extends ConsumerState<ClientDashboardPage> {
   @override
   Widget build(BuildContext context) {
     final draftAsync = ref.watch(draftCertificatesProvider);
+    final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pending Certificates'),
-        backgroundColor: Colors.deepPurple,
+        title: const Text('🎓 Pending Certificates'),
+        backgroundColor: Colors.deepPurple.shade700,
+        elevation: 8,
+        shadowColor: Colors.black54,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
+            tooltip: 'Refresh Data',
+            onPressed: () => ref.refresh(draftCertificatesProvider),
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            tooltip: 'More Settings',
             onPressed: () {
-              ref.refresh(draftCertificatesProvider);
+              _showExtraSettings(context);
             },
-          )
+          ),
         ],
       ),
       drawer: _buildDrawer(context),
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.white, Colors.purpleAccent],
+            colors: [Colors.white, Color(0xFFE1BEE7)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
         child: Column(
           children: [
+            _buildWelcomeBanner(),
             _buildSearchBar(),
+            _buildStatsBanner(),
             Expanded(
               child: draftAsync.when(
                 data: (certs) {
-                  final filtered = certs.where((c) => c.title.toLowerCase().contains(searchQuery.toLowerCase())).toList();
+                  final filtered = certs
+                      .where((c) => c.title.toLowerCase().contains(searchQuery.toLowerCase()))
+                      .toList();
                   if (filtered.isEmpty) {
-                    return const Center(child: Text('No draft certificates match your search.'));
+                    return _buildEmptyView();
                   }
                   return ListView.builder(
                     itemCount: filtered.length,
-                    itemBuilder: (_, i) {
-                      final cert = filtered[i];
-                      return _buildCertificateCard(context, ref, cert);
-                    },
+                    itemBuilder: (_, i) => _buildCertificateCard(context, ref, filtered[i]),
                   );
                 },
                 loading: () => const Center(child: CircularProgressIndicator()),
                 error: (e, _) => Center(child: Text('Error: $e')),
               ),
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: _createMockCertificate,
-        child: const Icon(Icons.add),
-        backgroundColor: Colors.deepPurple,
-        tooltip: 'Add Mock Certificate',
+        icon: const Icon(Icons.add),
+        label: const Text("Add Mock"),
+        backgroundColor: Colors.deepPurple.shade400,
+        elevation: 6,
       ),
     );
   }
 
+  Widget _buildWelcomeBanner() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Material(
+        elevation: 4,
+        borderRadius: BorderRadius.circular(12),
+        color: Colors.deepPurple.shade50,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          child: Row(
+            children: [
+              const Icon(Icons.emoji_events, size: 32, color: Colors.deepPurple),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  "Welcome back! Review and approve pending certificates below.",
+                  style: TextStyle(fontSize: 16, color: Colors.deepPurple.shade900),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatsBanner() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      decoration: BoxDecoration(
+        color: Colors.deepPurple.shade100,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.deepPurple.shade200),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildStatCard("Total", Icons.description, Colors.indigo, 12),
+          _buildStatCard("Approved", Icons.check_circle, Colors.green, 5),
+          _buildStatCard("Pending", Icons.hourglass_empty, Colors.orange, 7),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatCard(String label, IconData icon, Color color, int count) {
+    return Column(
+      children: [
+        Icon(icon, size: 30, color: color),
+        const SizedBox(height: 4),
+        Text('$count', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text(label, style: TextStyle(fontSize: 12)),
+      ],
+    );
+  }
   Widget _buildSearchBar() {
     return Padding(
       padding: const EdgeInsets.all(12.0),
-      child: TextField(
-        decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.search),
-          hintText: 'Search by title...',
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+      child: Material(
+        elevation: 3,
+        borderRadius: BorderRadius.circular(12),
+        child: TextField(
+          decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.search),
+            hintText: 'Search by title or recipient...',
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            fillColor: Colors.white,
+            filled: true,
+          ),
+          onChanged: (value) => setState(() => searchQuery = value),
         ),
-        onChanged: (value) => setState(() => searchQuery = value),
       ),
     );
   }
@@ -96,70 +172,136 @@ class _ClientDashboardPageState extends ConsumerState<ClientDashboardPage> {
       child: ListView(
         children: [
           const DrawerHeader(
-            decoration: BoxDecoration(color: Colors.deepPurple),
-            child: Text('Client Menu', style: TextStyle(color: Colors.white, fontSize: 24)),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.deepPurple, Colors.purpleAccent],
+              ),
+            ),
+            child: Center(
+              child: Text(
+                '🎓 Client Menu',
+                style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+              ),
+            ),
           ),
-          ListTile(
-            leading: const Icon(Icons.dashboard),
-            title: const Text('Dashboard'),
-            onTap: () => Navigator.pop(context),
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Logout'),
-            onTap: () {},
-          ),
+          _drawerItem(Icons.dashboard, 'Dashboard', () => Navigator.pop(context)),
+          _drawerItem(Icons.history, 'Activity Logs', () {}),
+          _drawerItem(Icons.notifications, 'Notifications', () {}),
+          _drawerItem(Icons.settings, 'Account Settings', () {}),
+          _drawerItem(Icons.logout, 'Logout', () {
+            Navigator.pop(context);
+            _showLogoutDialog(context);
+          }),
         ],
       ),
     );
   }
 
+
+  
+  Widget _drawerItem(IconData icon, String title, VoidCallback onTap) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.deepPurple),
+      title: Text(title),
+      onTap: onTap,
+      hoverColor: Colors.deepPurple.shade50,
+    );
+  }
+
+
+  
   Widget _buildCertificateCard(BuildContext context, WidgetRef ref, CertificateModel cert) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 6.0),
-      child: Card(
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(cert.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-              Text('Recipient: ${cert.recipientName}', style: const TextStyle(fontSize: 16)),
-              const SizedBox(height: 4),
-              Text('Status: ${cert.status}', style: const TextStyle(color: Colors.grey)),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: () => _approveCertificate(context, ref, cert.id),
-                    icon: const Icon(Icons.check),
-                    label: const Text('Approve'),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                  ),
-                  const SizedBox(width: 8),
-                  OutlinedButton.icon(
-                    onPressed: () => _showCertificateDetails(context, cert),
-                    icon: const Icon(Icons.info_outline),
-                    label: const Text('Details'),
-                  )
-                ],
-              )
-            ],
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.deepPurple.shade100,
+              blurRadius: 6,
+              offset: const Offset(2, 4),
+            ),
+          ],
+        ),
+        child: Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          elevation: 2,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(cert.title,
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Icon(Icons.person, size: 18, color: Colors.grey),
+                    const SizedBox(width: 4),
+                    Text('Recipient: ${cert.recipientName}',
+                        style: const TextStyle(fontSize: 15)),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Row(
+                  children: [
+                    const Icon(Icons.flag, size: 18, color: Colors.grey),
+                    const SizedBox(width: 4),
+                    Text('Status: ${cert.status}',
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: cert.status == CertificateStatus.issued.name
+                                ? Colors.green
+                                : Colors.orange)),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () => _approveCertificate(context, ref, cert.id),
+                      icon: const Icon(Icons.check),
+                      label: const Text('Approve'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green.shade600,
+                        foregroundColor: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    OutlinedButton.icon(
+                      onPressed: () => _showCertificateDetails(context, cert),
+                      icon: const Icon(Icons.info_outline),
+                      label: const Text('Details'),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
+  Widget _buildEmptyView() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Icon(Icons.inbox, size: 80, color: Colors.grey),
+          SizedBox(height: 12),
+          Text(
+            'No draft certificates found.',
+            style: TextStyle(fontSize: 18, color: Colors.black54),
+          ),
+        ],
+      ),
+    );
+  }
   Future<void> _approveCertificate(BuildContext context, WidgetRef ref, String certId) async {
     try {
       final user = ref.read(currentUserProvider).value!;
@@ -174,11 +316,17 @@ class _ClientDashboardPageState extends ConsumerState<ClientDashboardPage> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Certificate approved')),
+        const SnackBar(
+          content: Text('✅ Certificate approved'),
+          backgroundColor: Colors.green,
+        ),
       );
     } catch (err) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to approve: $err')),
+        SnackBar(
+          content: Text('❌ Failed to approve: $err'),
+          backgroundColor: Colors.red,
+        ),
       );
     }
   }
@@ -187,14 +335,25 @@ class _ClientDashboardPageState extends ConsumerState<ClientDashboardPage> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(cert.title),
+        title: Text(cert.title, style: const TextStyle(fontWeight: FontWeight.bold)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('Recipient: ${cert.recipientName}'),
-            Text('Status: ${cert.status}'),
-            const SizedBox(height: 12),
-            Text('Description: ${cert.description ?? "N/A"}'),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: Text(cert.recipientName),
+              subtitle: const Text('Recipient'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.description),
+              title: Text(cert.description ?? "No description"),
+              subtitle: const Text('Description'),
+            ),
+            ListTile(
+              leading: const Icon(Icons.check_circle),
+              title: Text(cert.status),
+              subtitle: const Text('Status'),
+            ),
           ],
         ),
         actions: [
@@ -207,6 +366,10 @@ class _ClientDashboardPageState extends ConsumerState<ClientDashboardPage> {
     );
   }
 
+
+
+
+  
   void _createMockCertificate() {
     final random = Random();
     final id = DateTime.now().millisecondsSinceEpoch.toString();
@@ -215,11 +378,86 @@ class _ClientDashboardPageState extends ConsumerState<ClientDashboardPage> {
       title: 'Mock Certificate ${random.nextInt(1000)}',
       recipientName: 'User ${random.nextInt(100)}',
       status: CertificateStatus.draft,
-      description: 'This is a mock certificate generated for testing.',
+      description: 'Generated mock certificate for testing.',
     );
     FirebaseFirestore.instance
         .collection(AppConfig.certificatesCollection)
         .doc(id)
         .set(cert.toJson());
   }
-}
+
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Logout?'),
+        content: const Text('Are you sure you want to log out?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.pop(ctx);
+              // Add actual logout logic here
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Logged out successfully')),
+              );
+            },
+            icon: const Icon(Icons.logout),
+            label: const Text('Logout'),
+            style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showExtraSettings(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      backgroundColor: Colors.white,
+      builder: (ctx) => Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+              '🔧 Extra Settings',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.palette),
+              title: const Text('Theme Settings'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.security),
+              title: const Text('Security Preferences'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.update),
+              title: const Text('Check for Updates'),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.help_outline),
+              title: const Text('Help & Feedback'),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+
+
+
